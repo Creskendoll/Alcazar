@@ -6,12 +6,15 @@ import json
 from base64 import b64encode, b64decode
 from cryptography.fernet import Fernet
 
-# TODO: What if user enters 'salt' or 'master_password' as a key?
-# TODO: add tests
+# TODO: What if user enters 'salt' or 'password_check' as a key?
+# TODO: Add tests
 # TODO: Allow rehashing and password reset
 # TODO: Add backups to prevent data loss
 # TODO: Don't ask for password unless user is retrieving or saving (no need to ask on '--help')
 # TODO: Allow more than just one secret per key
+# TODO: Display a message if secrets.json doesn't exist
+# TODO: Convert to class based model?
+# TODO: Allow persistent sessions?
 
 def get_secrets_on_startup():
     """ Load secrets from secrets.json or create secrets.json; get Fernet session """
@@ -23,31 +26,37 @@ def get_secrets_on_startup():
 
         if not secrets.get('salt'):
             raise KeyError('Could not find salt')
-        if not secrets.get('master_password'):
-            raise KeyError('Could not find master password')
+        if not secrets.get('password_check'):
+            raise KeyError('Could not find password_check secret. Unable to verify password.')
 
         encrpyted_user_pass = hashlib.pbkdf2_hmac('sha256', bytes(user_password, 'utf-8'), bytes(secrets['salt'], 'utf-8'), 1000000, 32)
 
-        if secrets['master_password'] != b64encode(encrpyted_user_pass).decode('utf-8'):
-            raise ValueError('Invalid password')
+        fernet_session = Fernet(b64encode(encrpyted_user_pass))
 
-        secret_key = encrpyted_user_pass
+        # Test that user encrpyted_user_pass is the correct secret key
+        retrieve_secret(secrets, 'password_check', fernet_session)
 
     except FileNotFoundError:
         with open('secrets.json', 'w') as secrets_file:
             salt = b64encode(os.urandom(32))
+
             encrpyted_master_pass = hashlib.pbkdf2_hmac('sha256', bytes(user_password, 'utf-8'), salt, 1000000, 32)
+
+            fernet_session = Fernet(b64encode(encrpyted_master_pass))
+
+            # Test secret used to verify that correct password is given
+            password_check = b64encode(fernet_session.encrypt(b64encode(os.urandom(32)))).decode('utf-8')
 
             secrets = {
                 'salt': salt.decode('utf-8'),
-                'master_password': b64encode(encrpyted_master_pass).decode('utf-8')
+                'password_check': password_check 
             }
 
             json.dump(secrets, secrets_file)
 
             secret_key = encrpyted_master_pass
 
-    return secrets, Fernet(b64encode(secret_key))
+    return secrets, fernet_session
 
 def retrieve_secret(secrets, secret_name, fernet_session):
     """ Retrieve a secret from a given secret name and fernet session """
