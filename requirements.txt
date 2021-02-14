@@ -1,6 +1,6 @@
 attrs==20.3.0
 cffi==1.14.4
-cryptography==3.3.1
+cryptography==3.4.5
 iniconfig==1.1.1
 packaging==20.9
 pluggy==0.13.1

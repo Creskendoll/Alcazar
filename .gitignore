@@ -1,3 +1,4 @@
 secrets.json
 .vscode
 venv-alcazar
+.pytest_cache

@@ -33,7 +33,7 @@ def get_secrets_on_startup():
 
         fernet_session = Fernet(b64encode(encrpyted_user_pass))
 
-        # Test that user encrpyted_user_pass is the correct secret key
+        # Test that encrpyted_user_pass is the correct secret key
         retrieve_secret(secrets, 'password_check', fernet_session)
 
     except FileNotFoundError:
