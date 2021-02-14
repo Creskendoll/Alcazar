@@ -6,6 +6,10 @@ Simple & secure password-based secret management using the cryptography library 
 2. Install required packages `pip install -r requirements.txt`
 3. Set up master password `python alcazar.py`
 
+## Run tests
+1. If you have a `./secrets.json` file, move it to another directory because the testing process would overwrite it.
+2. Run `pytest`
+
 ## Usage
 ```
 usage: alcazar.py [-h] [-r R] [-s S] [-l]

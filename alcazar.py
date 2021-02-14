@@ -8,11 +8,8 @@ import pyperclip
 from base64 import b64encode, b64decode
 from cryptography.fernet import Fernet
 
-def setup():
+def setup(master_pass):
     """ Set up secrets.json """
-    print('Welcome to Alcazar! Enter master password which will be used to encrypt secrets.')
-    master_pass = getpass.getpass('Master password:')
-
     with open('./secrets.json', 'w') as secrets_file:
         salt = b64encode(os.urandom(32))
 
@@ -42,10 +39,8 @@ def get_secrets():
 
     return secrets
 
-def start_fernet_session(secrets):
+def start_fernet_session(user_password, secrets):
     """ Start a Fernet session """
-    user_password = getpass.getpass()
-
     encrpyted_user_pass = hashlib.pbkdf2_hmac('sha256', bytes(user_password, 'utf-8'), bytes(secrets['salt'], 'utf-8'), 1000000, 32)
 
     fernet_session = Fernet(b64encode(encrpyted_user_pass))
@@ -72,7 +67,10 @@ def save_secret(secret_name, secret_value, secrets, fernet_session):
 
 if __name__ == '__main__':
     if not os.path.isfile('./secrets.json'):
-        setup()
+        print('Welcome to Alcazar! Enter master password which will be used to encrypt secrets.')
+        master_pass = getpass.getpass('Master password:')
+
+        setup(master_pass)
         sys.exit(0)
 
     arg_parser = argparse.ArgumentParser() 
@@ -101,16 +99,15 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # Validate input
-    if args.r or args.s:
-        if args.r in ('salt', 'password_check'):
-            print(f'Cannot use {args.r or args.s} as a secret name')
-            sys.exit(0)
+    if (args.r or args.s) in ('salt', 'password_check'):
+        print(f'Cannot use {args.r or args.s} as a secret name')
+        sys.exit(0)
+    if args.r and args.r not in secrets:
+        print(f'Could not find secret {args.r or args.s}')
+        sys.exit(0)
 
-        if not secrets.get(args.r or args.s):
-            print(f'Could not find secret {args.r or args.s}')
-            sys.exit(0)
-
-    fernet_session = start_fernet_session(secrets)
+    user_password = getpass.getpass()
+    fernet_session = start_fernet_session(user_password, secrets)
 
     if args.r:
         secret = retrieve_secret(secrets, args.r, fernet_session)
