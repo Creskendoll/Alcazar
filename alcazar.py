@@ -91,6 +91,7 @@ if __name__ == '__main__':
     # Get encrypted secrets
     secrets = get_secrets()
 
+    # List all secrets
     if args.l:
         for secret_name in secrets:
             if secret_name not in ('salt', 'password_check'):
@@ -103,12 +104,13 @@ if __name__ == '__main__':
         print(f'Cannot use {args.r or args.s} as a secret name')
         sys.exit(0)
     if args.r and args.r not in secrets:
-        print(f'Could not find secret {args.r or args.s}')
+        print(f'Could not find secret {args.r}')
         sys.exit(0)
 
     user_password = getpass.getpass()
     fernet_session = start_fernet_session(user_password, secrets)
 
+    # Retrieve a secret by name
     if args.r:
         secret = retrieve_secret(args.r, secrets, fernet_session)
         
@@ -118,6 +120,7 @@ if __name__ == '__main__':
 
         sys.exit(0)
 
+    # Store a secret by name
     if args.s:
         if args.s in ('salt', 'password_check'):
             print(f'Cannot use {args.s} as a secret name')
