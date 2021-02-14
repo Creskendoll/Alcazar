@@ -3,18 +3,10 @@ import getpass
 import os
 import argparse
 import json
+import sys
+import pyperclip
 from base64 import b64encode, b64decode
 from cryptography.fernet import Fernet
-
-# TODO: What if user enters 'salt' or 'password_check' as a key?
-# TODO: Add tests
-# TODO: Allow rehashing and password reset
-# TODO: Add backups to prevent data loss
-# TODO: Don't ask for password unless user is retrieving or saving (no need to ask on '--help')
-# TODO: Allow more than just one secret per key
-# TODO: Display a message if secrets.json doesn't exist
-# TODO: Convert to class based model?
-# TODO: Allow persistent sessions?
 
 def get_secrets_on_startup():
     """ Load secrets from secrets.json or create secrets.json; get Fernet session """
@@ -74,19 +66,50 @@ def save_secret(secret_name, secret_value, secrets, fernet_session):
     with open('secrets.json', 'w+') as secrets_file:
         secrets[secret_name] = encrypted_secret
         json.dump(secrets, secrets_file)
+        
 
 if __name__ == '__main__':
-    secrets, fernet_session = get_secrets_on_startup()
-
     arg_parser = argparse.ArgumentParser() 
     arg_parser.add_argument('-r', help='Retrieve a secret with a given name')
     arg_parser.add_argument('-s', help='Save a secret with a given name')
+    arg_parser.add_argument('-l', help='List the names of all stored secrets', action='store_true')
     args = arg_parser.parse_args()
 
-    # TODO: Save secrets to clipboard
+    if len(sys.argv) > 3:
+        print('Max arguments exceeded. You many only do one thing at a time.')
+        sys.exit(0)
+
+    if args.l:
+        with open('secrets.json', 'r') as secrets_file:
+            encrypted_secrets = json.load(secrets_file)
+
+        for secret_name in encrypted_secrets:
+            if secret_name not in ('salt', 'password_check'):
+                print(secret_name)
+        
+        sys.exit(0)
+
+    secrets, fernet_session = get_secrets_on_startup()
+
     if args.r:
+        if args.r in ('salt', 'password_check'):
+            print(f'Cannot use {args.r} as a secret name')
+            sys.exit(0)
+
         secret = retrieve_secret(secrets, args.r, fernet_session)
-        print(secret)
-    elif args.s:
+        
+        # Copy secret to clipboard
+        pyperclip.copy(secret)
+
+        sys.exit(0)
+
+    if args.s:
+        if args.s in ('salt', 'password_check'):
+            print(f'Cannot use {args.s} as a secret name')
+            sys.exit(0)
+
         secret_value = getpass.getpass('Secret: ')
         save_secret(args.s, secret_value, secrets, fernet_session)
+
+        sys.exit(0)
+
