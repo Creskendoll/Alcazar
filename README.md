@@ -1,5 +1,5 @@
 # Alcazar
-Simple & secure password-based secret management using the cryptography library & pbkdf2
+Simple & secure password-based secret management using the cryptography library & pbkdf2. Stores secrets by name in a json file using symmetric key encryption. Pbkdf2 is used to generate the secret key.
 
 ## Setup
 1. Clone Alcazar
