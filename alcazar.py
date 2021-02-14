@@ -74,7 +74,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     arg_parser = argparse.ArgumentParser() 
-    arg_parser.add_argument('-r', help='Retrieve a secret with a given name')
+    arg_parser.add_argument('-r', help='Retrieve a secret with a given name and copy to clipboard')
     arg_parser.add_argument('-s', help='Save a secret with a given name')
     arg_parser.add_argument('-l', help='List the names of all stored secrets', action='store_true')
     args = arg_parser.parse_args()

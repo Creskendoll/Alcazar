@@ -16,7 +16,7 @@ usage: alcazar.py [-h] [-r R] [-s S] [-l]
 
 optional arguments:
   -h, --help  show this help message and exit
-  -r R        Retrieve a secret with a given name
+  -r R        Retrieve a secret with a given name and copy to clipboard
   -s S        Save a secret with a given name
   -l          List the names of all stored secrets
 ```
