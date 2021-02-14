@@ -46,11 +46,11 @@ def start_fernet_session(user_password, secrets):
     fernet_session = Fernet(b64encode(encrpyted_user_pass))
 
     # Test that encrpyted_user_pass is the correct secret key
-    retrieve_secret(secrets, 'password_check', fernet_session)
+    retrieve_secret('password_check', secrets, fernet_session)
 
     return fernet_session
 
-def retrieve_secret(secrets, secret_name, fernet_session):
+def retrieve_secret(secret_name, secrets, fernet_session):
     """ Retrieve a secret from a given secret name and fernet session """
     secret_value = secrets[secret_name]
 
@@ -59,9 +59,9 @@ def retrieve_secret(secrets, secret_name, fernet_session):
 def save_secret(secret_name, secret_value, secrets, fernet_session):
     """ Save a secret with a given secret name and fernet session """
     encrypted_secret = b64encode(fernet_session.encrypt(bytes(secret_value, 'utf-8'))).decode('utf-8')
+    secrets[secret_name] = encrypted_secret
 
     with open('./secrets.json', 'w+') as secrets_file:
-        secrets[secret_name] = encrypted_secret
         json.dump(secrets, secrets_file)
 
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     fernet_session = start_fernet_session(user_password, secrets)
 
     if args.r:
-        secret = retrieve_secret(secrets, args.r, fernet_session)
+        secret = retrieve_secret(args.r, secrets, fernet_session)
         
         # Copy secret to clipboard
         pyperclip.copy(secret)
