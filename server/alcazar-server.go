@@ -1,4 +1,4 @@
-/* Server-side encrypted secret storage */
+/* Server-side secret storage w/ mongodb */
 
 package main
 

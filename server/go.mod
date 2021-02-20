@@ -1,4 +1,4 @@
-module alcazar
+module alcazar-server
 
 go 1.15
 
