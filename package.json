@@ -1,22 +1,24 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "name": "alcazar",
+  "version": "0.0.1",
+  "description": "A necessarily 2fa based desktop secret vault using PBKDF2 / AES with multiple layers of encryption",
+  "main": "app.js",
   "scripts": {
-    "start": "electron ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^11.2.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanHopkins7/Alcazar.git"
+  },
+  "author": "Ryan Hopkins",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/RyanHopkins7/Alcazar/issues"
+  },
+  "homepage": "https://github.com/RyanHopkins7/Alcazar#readme",
+  "dependencies": {
+    "electron": "^11.3.0",
+    "react": "^17.0.1",
+    "typescript": "^4.1.5"
   }
 }
