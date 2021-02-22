@@ -1,13 +1,14 @@
 // Start the Alcazar app
 
-import { app, BrowserWindow } from 'electron';
 import { execSync } from 'child_process';
-import Main from './main';
-
-// Compile SASS
-execSync(`sass ./style.scss ./dist/style.css`);
 
 // Compile TypeScript
 execSync(`tsc`);
+
+// Compile SASS
+execSync(`sass ./scss/style.scss ./dist/css/style.css`);
+
+import { app, BrowserWindow } from 'electron';
+import Main from './main';
 
 Main.main(app, BrowserWindow);

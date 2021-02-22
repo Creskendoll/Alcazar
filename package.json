@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/RyanHopkins7/Alcazar#readme",
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.12.13",
+    "commonjs": "^0.0.1",
     "electron": "^11.3.0",
     "nedb": "^1.8.0",
     "react": "^17.0.1",

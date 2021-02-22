@@ -3,11 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
-    <link rel="stylesheet" href="./dist/style.css">
+    <link rel="stylesheet" href="./dist/css/style.css">
 
     <title>Alcazar</title>
 </head>
@@ -15,14 +14,11 @@
 <body>
     <h1>Welcome to Alcazar!</h1>
 
-    <ul id="passwordList" class="password-list">
-        <li>
-            <p>password1</p>
-        </li>
-        <li>
-            <p>password2</p>
-        </li>
-    </ul>
+    <ul id="secretList" class="secret-list"></ul>
+
+    <button id="createSecret">Create Secret</button>
+
+    <script src="./renderer/script.js"></script>
 </body>
 
 </html>
