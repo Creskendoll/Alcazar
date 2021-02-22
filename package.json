@@ -17,12 +17,21 @@
   },
   "homepage": "https://github.com/RyanHopkins7/Alcazar#readme",
   "dependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.12.13",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
     "commonjs": "^0.0.1",
     "electron": "^11.3.0",
     "nedb": "^1.8.0",
     "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "sass": "^1.32.8",
     "typescript": "^4.1.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.23.0"
   }
 }

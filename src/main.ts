@@ -23,12 +23,12 @@ export default class Main {
             width: 800,
             height: 600,
             webPreferences: {
-                contextIsolation: false,
+                contextIsolation: false, // TODO: enable https://www.electronjs.org/docs/tutorial/context-isolation
                 nodeIntegration: true,
             }
         });
 
-        Main.mainWindow.loadURL('file://' + __dirname + '/../index.html');
+        Main.mainWindow.loadURL('file://' + __dirname + './../src/index.html');
         Main.mainWindow.on('closed', Main.onClose);
     }
 
