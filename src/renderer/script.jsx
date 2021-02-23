@@ -1,7 +1,7 @@
 // Executed in the browser context
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+const React = react.React;
+const ReactDOM = react.ReactDOM;
 
 // Components
 

@@ -1,6 +1,7 @@
 // Definitions & configurations for the Main class
 
 import { BrowserWindow } from 'electron';
+import path = require('path');
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -23,8 +24,9 @@ export default class Main {
             width: 800,
             height: 600,
             webPreferences: {
-                contextIsolation: false, // TODO: enable https://www.electronjs.org/docs/tutorial/context-isolation
+                contextIsolation: true,
                 nodeIntegration: true,
+                preload: path.join(__dirname, 'preload.js')
             }
         });
 
