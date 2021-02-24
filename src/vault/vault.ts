@@ -1,7 +1,14 @@
-// Insert a secret into nedb upon user action
+// Insert & retrieve secrets from the secret vault
 
-import { ipcMain } from 'electron';
+import { ipcMain, app } from 'electron';
+const Datastore = require('nedb-promises');
 
-ipcMain.on('insert-secret', (e, secret) => {
-    console.log(secret);
+let vaultDB = new Datastore({ filename: `${ app.getPath('userData') }/secrets`, autoload: true });
+
+ipcMain.handle('retrieve-all-secrets', async (e) => {
+    return await vaultDB.find({}).exec();
+});
+
+ipcMain.handle('insert-secret', async (e, secret: string) => {
+    return await vaultDB.insert({ secret: secret });
 });

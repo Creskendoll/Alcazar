@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld(
     'vault',
     {
-        insertSecret: (secret: string) => ipcRenderer.send('insert-secret', secret)
+        retrieveAllSecrets: () => ipcRenderer.invoke('retrieve-all-secrets'),
+        insertSecret: (secret: string) => ipcRenderer.invoke('insert-secret', secret),
     }
 )
