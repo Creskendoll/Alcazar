@@ -1,7 +1,7 @@
 // Definitions & configurations for the Main class
 
-import { BrowserWindow } from 'electron';
-import path = require('path');
+import { BrowserWindow } from "electron";
+import path = require("path");
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -9,13 +9,13 @@ export default class Main {
     static BrowserWindow;
 
     private static onWindowAllClosed() {
-        if (process.platform !== 'darwin') {
+        if (process.platform !== "darwin") {
             Main.application.quit();
         }
     }
 
     private static onClose() {
-        // Dereference the window object. 
+        // Dereference the window object.
         Main.mainWindow = null;
     }
 
@@ -26,22 +26,22 @@ export default class Main {
             webPreferences: {
                 contextIsolation: true,
                 nodeIntegration: true,
-                preload: path.join(__dirname, 'preload.js')
-            }
+                preload: path.join(__dirname, "preload.js"),
+            },
         });
 
-        Main.mainWindow.loadURL('file://' + __dirname + './../src/index.html');
-        Main.mainWindow.on('closed', Main.onClose);
+        Main.mainWindow.loadURL("file://" + __dirname + "./../src/index.html");
+        Main.mainWindow.on("closed", Main.onClose);
     }
 
     static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
-        // we pass the Electron.App object and the  
-        // Electron.BrowserWindow into this function 
-        // so this class has no dependencies. This 
-        // makes the code easier to write tests for 
+        // we pass the Electron.App object and the
+        // Electron.BrowserWindow into this function
+        // so this class has no dependencies. This
+        // makes the code easier to write tests for
         Main.BrowserWindow = browserWindow;
         Main.application = app;
-        Main.application.on('window-all-closed', Main.onWindowAllClosed);
-        Main.application.on('ready', Main.onReady);
+        Main.application.on("window-all-closed", Main.onWindowAllClosed);
+        Main.application.on("ready", Main.onReady);
     }
 }
