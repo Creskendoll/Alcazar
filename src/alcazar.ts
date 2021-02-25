@@ -15,7 +15,6 @@ execSync(`browserify ./src/renderer/script.jsx -t babelify --outfile ./dist/bund
 execSync(`sass ./src/scss/style.scss ./dist/css/style.css`);
 
 import { app, BrowserWindow } from 'electron';
-
 import Main from './main';
 import './vault/vault';
 

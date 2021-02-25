@@ -1,9 +1,9 @@
-const { contextBridge, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld(
     'vault',
     {
         retrieveAllSecrets: () => ipcRenderer.invoke('retrieve-all-secrets'),
-        insertSecret: (secret: string) => ipcRenderer.invoke('insert-secret', secret),
+        insertSecret: (secret: string) => ipcRenderer.invoke('insert-secret', secret)
     }
 )
